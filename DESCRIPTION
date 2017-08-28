@@ -1,0 +1,17 @@
+Package: simcor
+Title: Generate noisy correlation matrices
+Version: 0.1
+Authors@R: person("Richard", "Beare", 
+  email = "Richard.Beare@gmail.com", 
+  role = c("aut", "cre"))
+Description: Packaging of code distributed as part of the paper   "A METHOD FOR GENERATING REALISTIC CORRELATION
+  MATRICES", Johanna Hardin, Stephan Ramon Garcia, David Golan.
+  DOI: 10.1214/13-AOAS638. Code has been refactored
+  and cleaned a little. Original versions of the functions are used in the testing.
+Depends: R (>= 3.3.1)
+Suggests: testthat
+Imports: stats
+License: Not sure - nothing on the original code?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
