@@ -8,7 +8,7 @@ set.seed(seed)
 noise.iden.orig <- noisecor.orig(diag(15), epsilon = .5, eidim = 2)
 
 set.seed(seed)
-s1 <- simcorTop.orig()
+s1 <- simcorTop()
 set.seed(seed)
 s2 <- simcorTop.orig()
 
@@ -18,9 +18,9 @@ set.seed(seed)
 b2 <- simcor.orig()
 
 set.seed(seed)
-h1 <- simcor.H.orig()
+h1 <- simcor.H()
 set.seed(seed)
-h2 <- simcor.H()
+h2 <- simcor.H.orig()
 
 
 test_that("noise addition OK", {
