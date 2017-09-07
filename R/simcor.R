@@ -69,7 +69,7 @@ samp.Hub <-
 ########################
 #' Add noise to any user specified correlation matrix
 #' @param cormat the correlation matrix to which noise is to be added.
-#' @param epsilon the maximum noise level.
+#' @param epsilon epsilon maximum entry-wise random noise.
 #' @param eidim dimension of the noise.
 #' @description From Appendix A2. This is the core algorithm for adding noise to an
 #' arbitrary positive semi-definite matrix. The choice of eidim (M in the paper)
@@ -125,8 +125,8 @@ noisecor <- function(cormat,
 
 #' Block correlation noise matrix
 #' @param k Number of groups.
-#' @param size Vector length k specifying the size of each group
-#' @param epsilon Why is this an argument
+#' @param size Vector length k specifying the size of each group.
+#' @param epsilon maximum entry-wise random noise.
 #' @param eidim passed to noise corr (or should be)
 simcor <- function (k = 6,
                          size = c(10, 5, 8, 2, 15, 50),
@@ -139,15 +139,11 @@ simcor <- function (k = 6,
 {
   ndim <- sum(size)
   bigcor <- matrix(rep(delta, ndim * ndim), ncol = ndim)
+  ss <- c(0,cumsum(size))
   for (i in 1:k) {
     cor <- matrix(rep(rho[i], size[i] * size[i]), ncol = size[i])
-    if (i == 1) {
-      bigcor[1:size[1], 1:size[1]] <- cor
-    }
-    if (i != 1) {
-      bigcor[(sum(size[1:(i - 1)]) + 1):sum(size[1:i]),
-             (sum(size[1:(i - 1)]) + 1):sum(size[1:i])] <- cor
-    }
+    ti <- (ss[i]+1):ss[i+1]
+    bigcor[ti, ti] <- cor
   }
   cor.nz <- noisecor(bigcor, epsilon, eidim)
   return(cor.nz)
@@ -163,7 +159,7 @@ simcor <- function (k = 6,
 # with a block diagonal structure.  The size and base correlation for each
 # block is user specified
 
-
+#' Toeplitz correla
 # k is the number of groups
 # size is a vector of length k specifying the size of each group
 # rho is a vector of length k specifying base correlation values
