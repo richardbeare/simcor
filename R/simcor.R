@@ -126,8 +126,11 @@ noisecor <- function(cormat,
 #' Block correlation noise matrix
 #' @param k Number of groups.
 #' @param size Vector length k specifying the size of each group.
+#' @param rho vector of length k specifying base correlation values
+#' @param delta correlation of the off diagonal blocks (between group noise)
 #' @param epsilon maximum entry-wise random noise.
 #' @param eidim passed to noise corr (or should be)
+#' @export
 simcor <- function (k = 6,
                          size = c(10, 5, 8, 2, 15, 50),
                          rho = c(0.7,
@@ -155,16 +158,16 @@ simcor <- function (k = 6,
 ##  Simulating the Toeplitz Matrix
 ################################
 
-# this function calculates an AR(1) Toeplitz matrix
-# with a block diagonal structure.  The size and base correlation for each
-# block is user specified
-
-#' Toeplitz correla
-# k is the number of groups
-# size is a vector of length k specifying the size of each group
-# rho is a vector of length k specifying base correlation values
-# epsilon <- (1-max(rho))/(1+max(rho)) - .01
-# eidim is the space from which the noise is generated, the smaller the more noise
+#' Toeplitz correlation structure
+#' @details This function calculates an AR(1) Toeplitz matrix
+#' with a block diagonal structure.  The size and base correlation for each
+#' block is user specified
+#' @param k is the number of groups
+#' @param size is a vector of length k specifying the size of each group
+#' @param rho is a vector of length k specifying base correlation values
+#' @param maximum entry-wise random noise.
+#' @param eidim is the space from which the noise is generated, the smaller the more noise
+#' @export
 simcorTop <-
   function(k = 6,
            size = c(10, 5, 8, 2, 15, 50),
@@ -200,15 +203,43 @@ simcorTop <-
 # block is user specified.
 
 
-# k is the number of groups
-# size is a vector of length k specifying the size of each group
-# rho is a vector of length k specifying base correlation values
-# epsilon <- (1-min(rho) - 0.75*min(tau) ) - .01
-# tau_k = (max(rho_k) - min(rho_k) )/ (size_k -2)
-# eidim is the space from which the noise is generated, the smaller the more noise
-# power = 2 makes the correlations stay high
-# power = 0.5 makes the correlations descent rapidly
-
+#' Simulating the Hub Matrix (entries filled in using Toeplitz structure)
+#' @param k is the number of groups
+#' @param  size is a vector of length k specifying the size of each group
+#' @param  rho is a vector of length k specifying base correlation values
+#' @param  epsilon <- (1-min(rho) - 0.75*min(tau) ) - .01 - maximum entry-wise random noise.
+# Not used
+# @param  tau_k = (max(rho_k) - min(rho_k) )/ (size_k -2) - step size 
+#' @param  eidim is the space from which the noise is generated, the smaller the more noise
+#' @param power = 2 makes the correlations stay high, = 0.5 makes the correlations descent rapidly
+#' @export
+#' @examples 
+#' # Figure 2 in the paper
+#' vw <- function(Im)
+#' {
+#' image(Im[, ncol(Im):1], zlim=c(-0.4, 1), col=rev(heat.colors(64)))
+#' }
+#' k<-3
+#' sz <- c(100, 50, 80)
+#' rho <- matrix(c(0.7, 0.7, 0.4, 0, 0, 0), nrow=3)
+#' epsilon <- 0.23
+#' hTC1 <- simcor.H(k=k, size=sz, rho=rho, power=1, epsilon=0.23, eidim=2)
+#' vw(hTC1)
+#' rho <- matrix(c(0.7, 0.7, 0.4, 0.5, 0.6, 0.2), nrow=3)
+#' 
+#' hTC2 <- simcor.H(k=k, size=sz, rho=rho, power=1, epsilon=0.29, eidim=2)
+#' vw(hTC2)
+#' 
+#' hTC3 <- simcor.H(k=k, size=sz, rho=rho, power=1, epsilon=0.29, eidim=25)
+#' vw(hTC3)
+#' 
+#' hTC4 <- simcor.H(k=k, size=sz, rho=rho, power=1, epsilon=0.1, eidim=2)
+#' vw(hTC4)
+#' hTC5 <- simcor.H(k=k, size=sz, rho=rho, power=1, epsilon=0.25, eidim=2)
+#' vw(hTC5)
+#' rho <- matrix(c(0.8, 0.75, 0.7, 0, 0, 0), nrow=3)
+#' hTC6 <- simcor.H(k=k, size=sz, rho=rho, power=1, epsilon=0.19, eidim=2)
+#' vw(hTC6)
 simcor.H <- function(k = 6,
                           size = c(10, 5, 8, 7, 15, 50),
                           rho = rbind(c(.9, .7), c(.7, .7), c(.7, .2), c(.5, .3), c(.9, .85), c(.3, .2)),

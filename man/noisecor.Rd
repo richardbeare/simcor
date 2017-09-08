@@ -9,7 +9,7 @@ noisecor(cormat, epsilon = 0.01, eidim = 2)
 \arguments{
 \item{cormat}{the correlation matrix to which noise is to be added.}
 
-\item{epsilon}{the maximum noise level.}
+\item{epsilon}{epsilon maximum entry-wise random noise.}
 
 \item{eidim}{dimension of the noise.}
 }

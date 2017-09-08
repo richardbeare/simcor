@@ -10,9 +10,13 @@ simcor(k = 6, size = c(10, 5, 8, 2, 15, 50), rho = c(0.7, 0.7, 0.5, 0.9,
 \arguments{
 \item{k}{Number of groups.}
 
-\item{size}{Vector length k specifying the size of each group}
+\item{size}{Vector length k specifying the size of each group.}
 
-\item{epsilon}{Why is this an argument}
+\item{rho}{vector of length k specifying base correlation values}
+
+\item{delta}{correlation of the off diagonal blocks (between group noise)}
+
+\item{epsilon}{maximum entry-wise random noise.}
 
 \item{eidim}{passed to noise corr (or should be)}
 }
